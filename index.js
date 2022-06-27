@@ -133,6 +133,15 @@ function generateData(item) {
       type: 'url',
       value:item.href
     }
+  } else if(item instanceof RegExp) {
+    return {
+      type: 'regexp',
+      value: {
+        string:item.toString(),
+        source:item.source,
+        flags:item.flags
+      }
+    }
   } else if(item === undefined) {
     return {
       type: 'undefined',
@@ -228,6 +237,8 @@ function retrieveItem(data) {
     return NaN
   } else if(type=='infinity') {
     return Infinity
+  } else if(type=='regexp') {
+    return new RegExp(value.source,value.flags)
   } else if(type=='minusinfinity') {
     return -Infinity
   } else if(type=="date") {
