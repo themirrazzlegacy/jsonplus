@@ -17,6 +17,27 @@ function Uint8toArray(ui8) {
   return output
 }
 
+/**@param {Map} map*/
+function generateMapData(map) {
+  var data={}
+  map.forEach((value,key,self)=>{
+    data[key]=generateData(value)
+  })
+  return data
+}
+
+function retrieveMap(data) {
+  var map=[]
+  var keys=Object.keys(data)
+  var values=Object.values(data)
+  for(var i=0;i<keys.length;i++) {
+    map.push(
+      [keys[i],retrieveItem(values[i])]
+    )
+  }
+  return new Map(map)
+}
+
 
 /**
  * Returns an unstringified version of an item.
@@ -32,6 +53,11 @@ function generateData(item) {
     return {
       type: 'date',
       value: item.getTime()
+    }
+  } else if(item instanceof Map) {
+    return {
+      type: 'map',
+      value: generateMapData(item)
     }
   } else if(item instanceof Array) {
     return {
@@ -247,6 +273,8 @@ function retrieveItem(data) {
     error.name=value.name;
     error.stack=value.stack;
     return error
+  } else if(type=='map') {
+    return retrieveMap(value)
   } else if(type=='nan') {
     return NaN
   } else if(type=='infinity') {
