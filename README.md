@@ -16,6 +16,8 @@ A full list of what JSON+ can stringify!
 * RegExp Expressions
 * NaN, Infinity, and negative(-) Infinity
 * null AND undefined
+* Standalone Symbols
+* Symbols as Object Keys
 
 ## How it works
 Instead of building off of JSON, it uses objects with `type` keys to represent items normally not supported in JSON.
@@ -52,6 +54,11 @@ These are stored using the Precise Values method. Because these are special valu
 
 ### How URLs are stored.
 The `href` property of `URL` objects are stored when stringified, and then passed to a new `URL` object when parsed.
+
+## I want the source code
+Go ahead! This is completely open-source and uses the GNU General Public License 3.0.<br>
+You can modify, distribute, copy, and use this for any purpose you'd like!
+
 
 ## Future Plans:
 
