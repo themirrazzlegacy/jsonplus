@@ -27,8 +27,10 @@ This can stringify and parse more data types in JavaScript, including:
 | URIError       | No           | Message+Stack |   |   |
 | Error          | No           | Message+Stack |   |   |
 | URL            | No           | Yes           |   |   |
+| BigInt         | No           | Yes           |   |   |
+| RegExp         | No           | Yes           |   |   |
+| ArrayBuffer    | No           | Yes           |   |   |
 
 ### Future Plans:
 
-* Add the ability to have ArrayBuffers
-* ~~Store RegExp expressions~~ Done
+None yet...
