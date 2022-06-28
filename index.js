@@ -65,6 +65,11 @@ function generateData(item) {
         data:item.message
       }
     }
+  } else if(item instanceof ArrayBuffer) {
+    return {
+      type: 'arraybuffer',
+      value: Uint8toArray(new Uint8Array(item))
+    }
   } else if(item instanceof TypeError) {
     return {
       type: 'typeerror',
@@ -91,6 +96,11 @@ function generateData(item) {
         stack:item.stack?String(item.stack):null,
         data:String(item.message)
       }
+    }
+  } else if((typeof item==="bigint")) {
+    return {
+      type: 'bigint',
+      value:Number(item.toString())
     }
   } else if((item instanceof String) || (typeof item=="string")) {
     return {
@@ -218,6 +228,10 @@ function retrieveItem(data) {
     error.name=value.name;
     error.stack=value.stack;
     return error
+  } else if(type=='arraybuffer') {
+    return (new Uint8Array(value)).buffer
+  } else if(type=='bigint') {
+    return BigInt(value)
   } else if(type=="typeerror") {
     var error=new TypeError(value.data)
     error.name=value.name;
