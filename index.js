@@ -1,7 +1,8 @@
 /**
- * @name JSXON
- * JavaScript eXtended Object Notation
+ * @name JSON+
  * @author themirrazz#9986
+ * @copyright GNU General Public License 3.0
+ * Stringify more then
  */
 
 
@@ -183,6 +184,11 @@ function generateData(item) {
       type: 'undefined',
       value: false
     }
+  } else if(typeof item=='symbol') {
+    return {
+      type: 'symbol',
+      value: item.description
+    }
   } else if(item === null) {
     return {
       type: 'null',
@@ -204,22 +210,26 @@ function retrieveArray(data) {
 }
 
 function generateObjectData(object) {
-  var data={}
-  var keys=Object.keys(object)
+  var data=[]
+  var keys=Object.keys(object).concat(Object.getOwnPropertySymbols(object))
   for(var i=0;i<keys.length;i++) {
-    data[keys[i]]=generateData(
-      object[keys[i]]
+    data.push(
+      {
+        key:generateData(keys[i]),
+        value:generateData(object[keys[i]])
+      }
     )
   }
   return data
 }
 
+
+
 function retrieveObject(data) {
   var object={}
-  var keys=Object.keys(data)
-  for(var i=0;i<keys.length;i++) {
-    object[keys[i]]=retrieveItem(
-      data[keys[i]]
+  for(var i=0;i<data.length;i++) {
+    object[retrieveItem(data[i].key)]=retrieveItem(
+      data[i].value
     )
   }
   return object
@@ -254,6 +264,8 @@ function retrieveItem(data) {
     error.name=value.name;
     error.stack=value.stack;
     return error
+  } else if(type=='symbol') {
+    return Symbol(value)
   } else if(type=='arraybuffer') {
     return (new Uint8Array(value)).buffer
   } else if(type=='bigint') {
